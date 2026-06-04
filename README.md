@@ -142,7 +142,39 @@ Please bootstrap this project based on the template structure:
 
 ---
 
+## Custom Agent Skills
+
+This template includes a system for provisioning reusable agent skills (located in `.agents/skills/`) to guide the AI coder on specific frameworks, libraries, and best practices (such as Svelte 5, ElysiaJS, or Better Auth).
+
+### Skill Indexing
+To avoid the agent reading all skill files unnecessarily—which wastes context and increases costs—all available skills are indexed in [AGENTS.md](./AGENTS.md) under the `## Agent Skills Index` section. 
+
+When an agent starts a task, it scans the index. If the task relates to a topic handled by one of the skills, the agent will dynamically load and read only that specific `SKILL.md` file.
+
+> [!TIP]
+> If your IDE or AI coding assistant has native skill detection that automatically dynamically loads `.agents/skills`, you can safely delete the index section in [AGENTS.md](./AGENTS.md) to save context.
+
+### How to Use a Skill (Sample User Request)
+
+To leverage these skills, simply point your AI coder to the relevant skill in your prompt:
+
+```markdown
+I want to add email verification to our signup page. 
+Please read the `email-and-password-best-practices` skill before editing any code.
+```
+
+The agent will then:
+1. Lookup the path from the index in [AGENTS.md](./AGENTS.md).
+2. Load and read the instructions, configuration rules, and code patterns in `.agents/skills/email-and-password-best-practices/SKILL.md`.
+3. Surgically implement the email verification flow following those best practices.
+
+### Managing Skills (`skills-lock.json`)
+The skills in `.agents/skills/` are tracked via the [skills-lock.json](./skills-lock.json) lockfile. This file records the source repository, path, and version hash of each skill, making it easy to sync, update, or share skills across multiple agent-managed workspaces.
+
+---
+
 ## License
 
 This template is released under the [Unlicense](./LICENSE) (Public Domain Dedication). You are free to copy, modify, publish, use, or distribute these files in any form, for any purpose, with no conditions or attribution required.
+
 

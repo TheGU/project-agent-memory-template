@@ -55,5 +55,19 @@ Ground truth is code + passing tests. If a doc disagrees, fix the doc.
 ## Gotchas (global, always-true only)
 _None yet._
 
+## Agent Skills Index (Read the corresponding SKILL.md before writing/modifying code in its area)
+> [!NOTE]
+> If your IDE or agent tool already has built-in skill/tool detection that automatically loads `.agents/skills`, you can delete this index section to save context.
+
+- **[better-auth-best-practices](.agents/skills/better-auth-best-practices/SKILL.md)**: Configure Better Auth server/client, DB adapters, sessions, plugins, and env vars. Use when mentioning Better Auth, `auth.ts`, or setting up TypeScript authentication.
+- **[better-auth-security-best-practices](.agents/skills/better-auth-security-best-practices/SKILL.md)**: Rate limiting, secrets, CSRF, trusted origins, secure cookies, OAuth token encryption, IP tracking, audit logging. Use to secure/harden Better Auth.
+- **[create-auth-skill](.agents/skills/create-auth-skill/SKILL.md)**: Scaffold auth in TS/JS apps. Framework detection, route handlers, OAuth providers, auth UI pages. Use when adding login/sign-up.
+- **[elysiajs](.agents/skills/elysiajs/SKILL.md)**: Build type-safe, high-performance backends with ElysiaJS.
+- **[email-and-password-best-practices](.agents/skills/email-and-password-best-practices/SKILL.md)**: Email verification, password reset flows, password policies, custom hashing. Use for credential authentication.
+- **[organization-best-practices](.agents/skills/organization-best-practices/SKILL.md)**: Multi-tenant organizations, membership/invitations, custom roles/permissions (RBAC), and teams.
+- **[svelte-code-writer](.agents/skills/svelte-code-writer/SKILL.md)**: Svelte 5/SvelteKit doc lookup and code analysis. MUST be used when creating/modifying `.svelte` components or `.svelte.ts`/`.svelte.js` modules.
+- **[svelte-core-bestpractices](.agents/skills/svelte-core-bestpractices/SKILL.md)**: Reactivity runes, props, events, snippets, each blocks, styles, context. MUST be used when writing or editing Svelte code.
+- **[two-factor-authentication-best-practices](.agents/skills/two-factor-authentication-best-practices/SKILL.md)**: Configure TOTP authenticator apps, OTP via email/SMS, backup codes, trusted devices.
+
 ## Wiki index (read the page before working its area; add a line when you create one)
 _None yet — e.g. `auth → docs/wiki/auth.md`._
