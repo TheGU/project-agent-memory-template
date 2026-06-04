@@ -1,0 +1,148 @@
+# Project Agent Memory Template
+
+A structured, tiered memory and guidelines framework designed for AI coding agents (such as Claude, GPT, Gemini, or specialized IDE agents). This template prevents agent context bloat, reduces branch conflicts in multi-agent environments, establishes strict coding guardrails, and maintains evergreen documentation.
+
+---
+
+## The Core Philosophy (ADR-001)
+
+Traditionally, agents use a single large state file (e.g., `STATE.md` or `MEMORY.md`) to track progress and context. However, single-file approaches:
+
+1. **Grow unbounded**, consuming the agent's context window.
+2. **Cause merge conflicts** when multiple agents work on different branches.
+3. **Lose history** when logs are trimmed to save space.
+4. **Mix lifecycles**, putting high-level architecture rules in the same file as transient scratchpad notes.
+
+This template solves these problems by splitting memory by **lifecycle and scope** into a structured hierarchy.
+
+---
+
+## Tiered Memory Structure
+
+```
+├── CLAUDE.md                   # Agent entry point (tells agent to read AGENTS.md first)
+├── AGENTS.md                   # Strict guidelines, coding standards, and active wiki index
+├── .agents/
+│   └── skills/                 # Custom framework-specific instruction sets/skills
+└── docs/
+    ├── ARCHITECTURE.md         # The system map, tech stack, and module layout
+    ├── ROADMAP.md              # Milestone phases with concrete done-criteria
+    ├── BACKLOG.md              # Active task queue and unresolved questions
+    ├── DECISIONS.md            # ADRs (Architectural Decision Records) capturing "why" decisions
+    ├── wiki/                   # Deep-dive scoped guides (loaded only when needed)
+    └── sessions/               # Episodic plans and progress tracking
+        ├── TEMPLATE.md         # Session blueprint
+        ├── active/             # In-flight sessions (one file/branch per task)
+        └── archive/            # Log of completed sessions
+```
+
+### 1. The Entry Points
+
+- **[CLAUDE.md](file:///d:/Project/agent_template/CLAUDE.md)**: The gatekeeper. Instructs the agent to immediately read [AGENTS.md](file:///d:/Project/agent_template/AGENTS.md) before starting any task.
+- **[AGENTS.md](file:///d:/Project/agent_template/AGENTS.md)**: The central operating rules. Contains coding guidelines (e.g., Simplicity First, Surgical Changes), guardrails, gotchas, and the wiki index. **This file is always loaded at the start of every session.**
+
+### 2. High-Level Direction
+
+- **[docs/ROADMAP.md](file:///d:/Project/agent_template/docs/ROADMAP.md)**: The long-term plan divided into production-ready phases. Helps the agent understand what phase the project is in and what the concrete completion criteria are.
+- **[docs/BACKLOG.md](file:///d:/Project/agent_template/docs/BACKLOG.md)**: The short-term task queue and list of open questions. Agents claim items here but do not modify this file to do so (avoiding branch conflicts).
+
+### 3. System Design & Architectural Rationale
+
+- **[docs/ARCHITECTURE.md](file:///d:/Project/agent_template/docs/ARCHITECTURE.md)**: Defines the tech stack, module responsibilities, folder structures, and key data flow models.
+- **[docs/DECISIONS.md](file:///d:/Project/agent_template/docs/DECISIONS.md)**: An append-only log of Architectural Decision Records (ADRs). Helps agents understand the rationale behind past decisions and tech choices.
+
+### 4. Deep-Dives
+
+- **[docs/wiki/](file:///d:/Project/agent_template/docs/wiki)**: Scoped, topic-specific knowledge bases (e.g., `auth.md`, `testing.md`). They are linked from [AGENTS.md](file:///d:/Project/agent_template/AGENTS.md)'s wiki index and are only read when the agent's task touches that specific module.
+
+### 5. Episodic State & Concurrency Control
+
+- **[docs/sessions/](file:///d:/Project/agent_template/docs/sessions)**: A folder containing episodic session files.
+  - **active/**: Contains active session files (e.g., `active/2026-06-04-implement-auth.md`). Each session corresponds to exactly one git branch/task. Agents write logs and keep their handoff notes here, which prevents parallel work on different branches from causing merge conflicts in memory files.
+  - **archive/**: Contains completed sessions, serving as a history of agent activities.
+
+### 6. Custom Agent Skills
+
+- **[.agents/skills/](file:///d:/Project/agent_template/.agents/skills)**: Houses customized, reusable instructions and guidelines for the agent to reference when developing components utilizing specific libraries (e.g., Elysia, Better Auth, Svelte).
+
+---
+
+## The Agent-Developer Workflow
+
+Follow this cycle for every task:
+
+```mermaid
+graph TD
+    A[Start Session: Copy TEMPLATE.md to active/] --> B[Claim task from BACKLOG.md]
+    B --> C[Work on branch & update active/session file]
+    C --> D[Verify changes with tests]
+    D --> E[Promote learnings to permanent docs]
+    E --> F[Move session file to archive/ & set status to done]
+```
+
+### 1. Starting a Session
+
+1. In your working git branch, copy [docs/sessions/TEMPLATE.md](file:///d:/Project/agent_template/docs/sessions/TEMPLATE.md) to `docs/sessions/active/YYYY-MM-DD-<slug>.md`.
+2. Fill out the `scope` metadata block (claimed backlog items, target files, etc.).
+3. Summarize the goal and task breakdown.
+
+### 2. Working and Checkpointing
+
+- As work progresses, append brief timestamps to the **Log** section.
+- Keep the **Handoff** section completely up to date. If the session is interrupted or handed over to another agent, they can resume instantly using only this handoff.
+
+### 3. Closing & Promoting Learnings (Required)
+
+Before merging your branch into `main`:
+
+1. Move your session file from `docs/sessions/active/` to `docs/sessions/archive/` and update `status: done` in the frontmatter.
+2. Promote permanent knowledge out of your session log to the relevant docs:
+   - **Always-true gotchas or rules** → [AGENTS.md](file:///d:/Project/agent_template/AGENTS.md)
+   - **Scoped how-it-works / domain guides** → `docs/wiki/<topic>.md` (and add to the [AGENTS.md](file:///d:/Project/agent_template/AGENTS.md) index)
+   - **Durable design choices / ADRs** → [docs/DECISIONS.md](file:///d:/Project/agent_template/docs/DECISIONS.md)
+   - **Module structural / API updates** → [docs/ARCHITECTURE.md](file:///d:/Project/agent_template/docs/ARCHITECTURE.md)
+   - **New follow-ups / answered questions** → [docs/BACKLOG.md](file:///d:/Project/agent_template/docs/BACKLOG.md)
+
+---
+
+## Adoption Guide
+
+To adopt this template in your repository:
+
+1. Copy the `CLAUDE.md`, `AGENTS.md`, `.agents/`, and `docs/` directories to your project's root.
+2. Edit [docs/ARCHITECTURE.md](file:///d:/Project/agent_template/docs/ARCHITECTURE.md) and customize the technology stack table, module layout, and core business entities.
+3. Edit [AGENTS.md](file:///d:/Project/agent_template/AGENTS.md) and adapt the coding guidelines and guardrails to suit your codebase standards.
+4. Populate [docs/ROADMAP.md](file:///d:/Project/agent_template/docs/ROADMAP.md) and [docs/BACKLOG.md](file:///d:/Project/agent_template/docs/BACKLOG.md) with your project roadmap phases and task backlog.
+5. Instruct your AI agent (in system prompts or via custom instructions) to read [CLAUDE.md](file:///d:/Project/agent_template/CLAUDE.md) first.
+
+---
+
+## Bootstrap Prompt for AI Coders
+
+When starting a new project using this template, clone this repository and copy/paste this prompt (filling in your project details) to your AI coder. This kicks off the initialization and fills in all template files based on your requirements:
+
+```markdown
+I am starting a new project. Here is the description and requirements for what I want to build:
+
+---
+[INSERT YOUR PROJECT DESCRIPTION, TECH STACK PREFERENCES, AND REQUIREMENTS HERE]
+---
+
+Please bootstrap this project based on the template structure:
+1. Read the current CLAUDE.md and AGENTS.md files to understand the project structure and rules.
+2. Delete the root README.md file (which contains template setup instructions) so we can start clean.
+3. Review and initialize the core project files under the docs/ directory by replacing the placeholder templates with actual content tailored to the project description above:
+   - Edit docs/ARCHITECTURE.md to reflect our proposed tech stack, directory layout, and core business entities.
+   - Edit docs/ROADMAP.md and docs/BACKLOG.md to define our project phases, done-criteria, and immediate tasks.
+   - Edit docs/DECISIONS.md to record our initial architecture decision records (ADRs).
+   - Adapt AGENTS.md with specific coding guidelines, guardrails, and conventions for our selected tech stack.
+4. Create a new active session file under docs/sessions/active/ to track this bootstrapping work.
+5. Present the initialized architecture and roadmap plan to me for approval.
+```
+
+---
+
+## License
+
+This template is released under the [Unlicense](./LICENSE) (Public Domain Dedication). You are free to copy, modify, publish, use, or distribute these files in any form, for any purpose, with no conditions or attribution required.
+
