@@ -55,7 +55,20 @@ Ground truth is code + passing tests. If a doc disagrees, fix the doc.
 ## Gotchas (global, always-true only)
 _None yet._
 
-## Agent Skills Index (Read the corresponding SKILL.md before writing/modifying code in its area)
+
+## Wiki index — read a page only when the task needs its depth
+**Read-gate:** open the page before *substantial* work in its area — a new capability, 
+a changed flow/contract/schema, a refactor, or when you're unsure or hit a block. 
+**Skip it** for a small, well-understood change (tweak a step, copy/label, an obvious-cause bugfix). 
+When unsure, skim the headings and read only the section you touch; prefer reading over guessing. 
+Add a line when you create a page.
+_None yet — e.g. `auth → docs/wiki/auth.md`._
+
+
+## Agent Skills Index — open a SKILL.md only when the task needs it
+Same **read-gate** as the wiki above: open the matching SKILL.md when starting new or substantial
+work in its area, or when unsure / blocked — not for a small, well-understood adjustment. The
+`use when…` cues below scope *which* skill is relevant, not *whether* to read it; the gate decides that.
 > [!NOTE]
 > If your IDE or agent tool already has built-in skill/tool detection that automatically loads `.agents/skills`, you can delete this index section to save context.
 
@@ -68,6 +81,3 @@ _None yet._
 - **[svelte-code-writer](.agents/skills/svelte-code-writer/SKILL.md)**: Svelte 5/SvelteKit doc lookup and code analysis. MUST be used when creating/modifying `.svelte` components or `.svelte.ts`/`.svelte.js` modules.
 - **[svelte-core-bestpractices](.agents/skills/svelte-core-bestpractices/SKILL.md)**: Reactivity runes, props, events, snippets, each blocks, styles, context. MUST be used when writing or editing Svelte code.
 - **[two-factor-authentication-best-practices](.agents/skills/two-factor-authentication-best-practices/SKILL.md)**: Configure TOTP authenticator apps, OTP via email/SMS, backup codes, trusted devices.
-
-## Wiki index (read the page before working its area; add a line when you create one)
-_None yet — e.g. `auth → docs/wiki/auth.md`._
