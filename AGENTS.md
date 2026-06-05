@@ -21,8 +21,14 @@ Ground truth is code + passing tests. If a doc disagrees, fix the doc.
   first to avoid overlap.
 - Work resumably: commit small green checkpoints; keep the handoff current as you go, so a stop
   at any point resumes from the file alone.
-- Close (merged to main): promote learnings (below), set `status: done`, move to
-  `docs/sessions/archive/`.
+- Close when done-criteria are met and tests + typecheck are green. Do all of: merge `main` into your
+  branch, merge the branch to `main`, promote learnings (below), set `status: done`, move the session
+  to `docs/sessions/archive/`, report what landed. Always merge on close — never wait for review.
+  Adding a new ADR is normal close work, not a reason to wait. (Standing authorization to merge to
+  `main`.)
+- Do **not** merge only if: done-criteria are unmet, tests/typecheck are red, or a new decision
+  surfaces that wasn't settled at session start — then stop and ask. Settle decisions in plan mode at
+  session start, not before the merge.
 
 ## Promote on close (required)
 | Learning | Goes to |
