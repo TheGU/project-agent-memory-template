@@ -22,7 +22,9 @@ Ground truth is code + passing tests. If a doc disagrees, fix the doc.
 - Work resumably: commit small green checkpoints; keep the handoff current as you go, so a stop
   at any point resumes from the file alone.
 - Close when done-criteria are met and tests + typecheck are green. Do all of: merge `main` into your
-  branch, merge the branch to `main`, promote learnings (below), set `status: done`, move the session
+  branch, merge the branch to `main`, promote learnings (below), **re-triage the deferred backlog**
+  (every deferred item must carry a `target:`; promote any whose target is the now-current phase/gate
+  into the active queue), set `status: done`, move the session
   to `docs/sessions/archive/`, report what landed. Always merge on close — never wait for review.
   Adding a new ADR is normal close work, not a reason to wait. (Standing authorization to merge to
   `main`.)
@@ -38,6 +40,7 @@ Ground truth is code + passing tests. If a doc disagrees, fix the doc.
 | Durable decision | `docs/DECISIONS.md` (new ADR) |
 | Structure/module change | `docs/ARCHITECTURE.md` |
 | Done items / new follow-ups / answered questions | `docs/BACKLOG.md` |
+| Deferred item whose `target:` is now current | `docs/BACKLOG.md` (active queue) |
 
 ## Coding Guidelines
 - **Think Before Coding**: Don't assume or hide confusion. State assumptions explicitly, present tradeoffs, push back on overcomplication, and ask if unclear.

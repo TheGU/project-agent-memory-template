@@ -22,6 +22,9 @@ This template solves these problems by splitting memory by **lifecycle and scope
 ```
 ├── CLAUDE.md                   # Agent entry point (tells agent to read AGENTS.md first)
 ├── AGENTS.md                   # Strict guidelines, coding standards, and active wiki index
+├── .claude/
+│   └── commands/
+│       └── next.md             # Claude command for continuing the next task/session
 ├── .agents/
 │   └── skills/                 # Custom framework-specific instruction sets/skills
 └── docs/
@@ -38,32 +41,37 @@ This template solves these problems by splitting memory by **lifecycle and scope
 
 ### 1. The Entry Points
 
-- **[CLAUDE.md](file:///d:/Project/agent_template/CLAUDE.md)**: The gatekeeper. Instructs the agent to immediately read [AGENTS.md](file:///d:/Project/agent_template/AGENTS.md) before starting any task.
-- **[AGENTS.md](file:///d:/Project/agent_template/AGENTS.md)**: The central operating rules. Contains coding guidelines (e.g., Simplicity First, Surgical Changes), guardrails, gotchas, and the wiki index. **This file is always loaded at the start of every session.**
+- **[CLAUDE.md](./CLAUDE.md)**: The gatekeeper. Instructs the agent to immediately read [AGENTS.md](./AGENTS.md) before starting any task.
+- **[AGENTS.md](./AGENTS.md)**: The central operating rules. Contains coding guidelines (e.g., Simplicity First, Surgical Changes), guardrails, gotchas, and the wiki index. **This file is always loaded at the start of every session.**
 
 ### 2. High-Level Direction
 
-- **[docs/ROADMAP.md](file:///d:/Project/agent_template/docs/ROADMAP.md)**: The long-term plan divided into production-ready phases. Helps the agent understand what phase the project is in and what the concrete completion criteria are.
-- **[docs/BACKLOG.md](file:///d:/Project/agent_template/docs/BACKLOG.md)**: The short-term task queue and list of open questions. Agents claim items here but do not modify this file to do so (avoiding branch conflicts).
+- **[docs/ROADMAP.md](./docs/ROADMAP.md)**: The long-term plan divided into production-ready phases. Helps the agent understand what phase the project is in and what the concrete completion criteria are.
+- **[docs/BACKLOG.md](./docs/BACKLOG.md)**: The short-term task queue and list of open questions. Agents claim items here but do not modify this file to do so (avoiding branch conflicts).
 
 ### 3. System Design & Architectural Rationale
 
-- **[docs/ARCHITECTURE.md](file:///d:/Project/agent_template/docs/ARCHITECTURE.md)**: Defines the tech stack, module responsibilities, folder structures, and key data flow models.
-- **[docs/DECISIONS.md](file:///d:/Project/agent_template/docs/DECISIONS.md)**: An append-only log of Architectural Decision Records (ADRs). Helps agents understand the rationale behind past decisions and tech choices.
+- **[docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)**: Defines the tech stack, module responsibilities, folder structures, and key data flow models.
+- **[docs/DECISIONS.md](./docs/DECISIONS.md)**: An append-only log of Architectural Decision Records (ADRs). Helps agents understand the rationale behind past decisions and tech choices.
 
 ### 4. Deep-Dives
 
-- **[docs/wiki/](file:///d:/Project/agent_template/docs/wiki)**: Scoped, topic-specific knowledge bases (e.g., `auth.md`, `testing.md`). They are linked from [AGENTS.md](file:///d:/Project/agent_template/AGENTS.md)'s wiki index and are only read when the agent's task touches that specific module.
+- **[docs/wiki/](./docs/wiki/)**: Scoped, topic-specific knowledge bases (e.g., `auth.md`, `testing.md`). They are linked from [AGENTS.md](./AGENTS.md)'s wiki index and are only read when the agent's task touches that specific module.
 
 ### 5. Episodic State & Concurrency Control
 
-- **[docs/sessions/](file:///d:/Project/agent_template/docs/sessions)**: A folder containing episodic session files.
+- **[docs/sessions/](./docs/sessions/)**: A folder containing episodic session files.
   - **active/**: Contains active session files (e.g., `active/2026-06-04-implement-auth.md`). Each session corresponds to exactly one git branch/task. Agents write logs and keep their handoff notes here, which prevents parallel work on different branches from causing merge conflicts in memory files.
   - **archive/**: Contains completed sessions, serving as a history of agent activities.
 
-### 6. Custom Agent Skills
+### 6. Claude Commands
 
-- **[.agents/skills/](file:///d:/Project/agent_template/.agents/skills)**: Houses customized, reusable instructions and guidelines for the agent to reference when developing components utilizing specific libraries (e.g., Elysia, Better Auth, Svelte).
+- **[.claude/commands/](./.claude/commands/)**: Repo-local Claude commands that package common workflows into reusable slash commands.
+  - **[next.md](./.claude/commands/next.md)**: Continues development by following `AGENTS.md`, choosing the next suitable task, announcing the pick before coding, and opening a session file.
+
+### 7. Custom Agent Skills
+
+- **[.agents/skills/](./.agents/skills/)**: Houses customized, reusable instructions and guidelines for the agent to reference when developing components utilizing specific libraries (e.g., Elysia, Better Auth, Svelte).
 
 ---
 
@@ -82,7 +90,7 @@ graph TD
 
 ### 1. Starting a Session
 
-1. In your working git branch, copy [docs/sessions/TEMPLATE.md](file:///d:/Project/agent_template/docs/sessions/TEMPLATE.md) to `docs/sessions/active/YYYY-MM-DD-<slug>.md`.
+1. In your working git branch, copy [docs/sessions/TEMPLATE.md](./docs/sessions/TEMPLATE.md) to `docs/sessions/active/YYYY-MM-DD-<slug>.md`.
 2. Fill out the `scope` metadata block (claimed backlog items, target files, etc.).
 3. Summarize the goal and task breakdown.
 
@@ -97,11 +105,40 @@ Before merging your branch into `main`:
 
 1. Move your session file from `docs/sessions/active/` to `docs/sessions/archive/` and update `status: done` in the frontmatter.
 2. Promote permanent knowledge out of your session log to the relevant docs:
-   - **Always-true gotchas or rules** → [AGENTS.md](file:///d:/Project/agent_template/AGENTS.md)
-   - **Scoped how-it-works / domain guides** → `docs/wiki/<topic>.md` (and add to the [AGENTS.md](file:///d:/Project/agent_template/AGENTS.md) index)
-   - **Durable design choices / ADRs** → [docs/DECISIONS.md](file:///d:/Project/agent_template/docs/DECISIONS.md)
-   - **Module structural / API updates** → [docs/ARCHITECTURE.md](file:///d:/Project/agent_template/docs/ARCHITECTURE.md)
-   - **New follow-ups / answered questions** → [docs/BACKLOG.md](file:///d:/Project/agent_template/docs/BACKLOG.md)
+   - **Always-true gotchas or rules** → [AGENTS.md](./AGENTS.md)
+   - **Scoped how-it-works / domain guides** → `docs/wiki/<topic>.md` (and add to the [AGENTS.md](./AGENTS.md) index)
+   - **Durable design choices / ADRs** → [docs/DECISIONS.md](./docs/DECISIONS.md)
+   - **Module structural / API updates** → [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)
+   - **New follow-ups / answered questions** → [docs/BACKLOG.md](./docs/BACKLOG.md)
+
+## Continue Development with `/next`
+
+If your Claude environment supports project commands from `.claude/commands/`, this template includes a reusable `/next` command in [.claude/commands/next.md](./.claude/commands/next.md) to help resume work with minimal prompting.
+
+### What `/next` does
+
+- Reads [AGENTS.md](./AGENTS.md), [docs/BACKLOG.md](./docs/BACKLOG.md), [docs/ROADMAP.md](./docs/ROADMAP.md), and the active session list before choosing work.
+- Uses your explicit argument if you provide one; otherwise it picks the next task based on the current phase and deferred-item rules in `AGENTS.md`.
+- Tells you what it picked and why **before** coding.
+- Asks you to choose if there are multiple equally reasonable candidates.
+- Opens a new session file under `docs/sessions/active/`.
+- Follows the repo's test-first and close-out workflow.
+
+### Usage
+
+Start the next appropriate task automatically:
+
+```text
+/next
+```
+
+Tell Claude exactly what to continue or work on:
+
+```text
+/next Task 2: Configure database schema and migrations
+```
+
+This is especially useful when starting a fresh Claude conversation or resuming after a context reset.
 
 ---
 
@@ -109,11 +146,11 @@ Before merging your branch into `main`:
 
 To adopt this template in your repository:
 
-1. Copy the `CLAUDE.md`, `AGENTS.md`, `.agents/`, and `docs/` directories to your project's root.
-2. Edit [docs/ARCHITECTURE.md](file:///d:/Project/agent_template/docs/ARCHITECTURE.md) and customize the technology stack table, module layout, and core business entities.
-3. Edit [AGENTS.md](file:///d:/Project/agent_template/AGENTS.md) and adapt the coding guidelines and guardrails to suit your codebase standards.
-4. Populate [docs/ROADMAP.md](file:///d:/Project/agent_template/docs/ROADMAP.md) and [docs/BACKLOG.md](file:///d:/Project/agent_template/docs/BACKLOG.md) with your project roadmap phases and task backlog.
-5. Instruct your AI agent (in system prompts or via custom instructions) to read [CLAUDE.md](file:///d:/Project/agent_template/CLAUDE.md) first.
+1. Copy the `CLAUDE.md`, `AGENTS.md`, `.claude/`, `.agents/`, and `docs/` directories to your project's root.
+2. Edit [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) and customize the technology stack table, module layout, and core business entities.
+3. Edit [AGENTS.md](./AGENTS.md) and adapt the coding guidelines and guardrails to suit your codebase standards.
+4. Populate [docs/ROADMAP.md](./docs/ROADMAP.md) and [docs/BACKLOG.md](./docs/BACKLOG.md) with your project roadmap phases and task backlog.
+5. Instruct your AI agent (in system prompts or via custom instructions) to read [CLAUDE.md](./CLAUDE.md) first.
 
 ---
 
