@@ -19,15 +19,22 @@ Ground truth is code + passing tests. If a doc disagrees, fix the doc.
 - Start: copy `docs/sessions/TEMPLATE.md` → `docs/sessions/active/YYYY-MM-DD-<slug>.md`, fill
   `scope`. Declaring scope claims a BACKLOG item — don't edit BACKLOG to claim. Read `active/`
   first to avoid overlap.
-- Work resumably: commit small green checkpoints; keep the handoff current as you go, so a stop
-  at any point resumes from the file alone.
-- Close when done-criteria are met and tests + typecheck are green. Do all of: merge `main` into your
-  branch, merge the branch to `main`, promote learnings (below), **re-triage the deferred backlog**
-  (every deferred item must carry a `target:`; promote any whose target is the now-current phase/gate
-  into the active queue), set `status: done`, move the session
-  to `docs/sessions/archive/`, report what landed. Always merge on close — never wait for review.
-  Adding a new ADR is normal close work, not a reason to wait. (Standing authorization to merge to
-  `main`.)
+- One git branch per session; **commit freely** — use git fully in development. Commit small green
+  checkpoints as you go and keep the handoff current, so a stop at any point resumes from the file alone.
+- **Never `git push`** — all git work stays local; origin is never touched. (Also never add
+  self-attribution trailers to commits.)
+- **Git definition-of-done for a session** (at close, all local): commit your work → merge `main`
+  into your working branch → resolve any conflicts → merge the working branch back into `main`.
+- **Finish, then commit — never pause to ask permission to commit.** Committing is part of completing
+  a unit of work: do it and the close steps autonomously, then report what landed for async review.
+  Stopping mid-task to ask "should I commit?" forces an expensive full-context reload later just to do
+  one trivial thing. Only stop mid-task for a genuine *unsettled decision* — never for commit/checkpoint
+  permission. If the owner wants changes after review, they open a new session.
+- Close when done-criteria are met and tests + typecheck are green. Do all of: the git DoD above,
+  promote learnings (below), **re-triage the deferred backlog** (every deferred item must carry a
+  `target:`; promote any whose target is the now-current phase/gate into the active queue), set
+  `status: done`, move the session to `docs/sessions/archive/`, report what landed. Always merge on
+  close — never wait for review. Adding a new ADR is normal close work, not a reason to wait.
 - Do **not** merge only if: done-criteria are unmet, tests/typecheck are red, or a new decision
   surfaces that wasn't settled at session start — then stop and ask. Settle decisions in plan mode at
   session start, not before the merge.
