@@ -59,5 +59,6 @@ surrounding prose. Broken links are allowed.
 
 ## Placement
 
-Global always-true -> `AGENTS.md` Gotchas. Scoped how-it-works -> here. A decision (why) ->
-`DECISIONS.md`. One-off task detail -> the session file.
+Global always-true -> `AGENTS.md` Gotchas. Scoped how-it-works -> here. A genuine fork (why) ->
+`DECISIONS.md` (only a real choice with a rejected alternative, or a deviation from the baseline).
+One-off task detail -> the session file.

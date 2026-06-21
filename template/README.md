@@ -107,7 +107,7 @@ Before merging your branch into `main`:
 2. Promote permanent knowledge out of your session log to the relevant docs:
    - **Always-true gotchas or rules** → [AGENTS.md](./AGENTS.md)
    - **Scoped how-it-works / domain guides** → `docs/wiki/<topic>.md` (and add to the [AGENTS.md](./AGENTS.md) index)
-   - **Durable design choices / ADRs** → [docs/DECISIONS.md](./docs/DECISIONS.md)
+   - **Genuine forks / deviations from the baseline (not standard work)** → [docs/DECISIONS.md](./docs/DECISIONS.md)
    - **Module structural / API updates** → [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)
    - **New follow-ups / answered questions** → [docs/BACKLOG.md](./docs/BACKLOG.md)
 
@@ -169,9 +169,9 @@ Please bootstrap this project based on the template structure:
 1. Read the current CLAUDE.md and AGENTS.md files to understand the project structure and rules.
 2. Delete the root README.md file (which contains template setup instructions) so we can start clean.
 3. Review and initialize the core project files under the docs/ directory by replacing the placeholder templates with actual content tailored to the project description above:
-   - Edit docs/ARCHITECTURE.md to reflect our proposed tech stack, directory layout, and core business entities.
+   - Edit docs/ARCHITECTURE.md to reflect our proposed tech stack, directory layout, core business entities, and the baseline (the standard/default this system implements).
    - Edit docs/ROADMAP.md and docs/BACKLOG.md to define our project phases, done-criteria, and immediate tasks.
-   - Edit docs/DECISIONS.md to record our initial architecture decision records (ADRs).
+   - Edit docs/DECISIONS.md to record only genuine forks (a choice with a named rejected alternative). Standard or default behavior is described in the wiki, not recorded as an ADR.
    - Adapt AGENTS.md with specific coding guidelines, guardrails, and conventions for our selected tech stack.
 4. Create a new active session file under docs/sessions/active/ to track this bootstrapping work.
 5. Present the initialized architecture and roadmap plan to me for approval.

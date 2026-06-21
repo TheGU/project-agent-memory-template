@@ -44,7 +44,7 @@ Ground truth is code + passing tests. If a doc disagrees, fix the doc.
 |---|---|
 | Global, always-true gotcha/rule | `AGENTS.md` → Gotchas |
 | Scoped how-it-works | `docs/wiki/<topic>.md` (full frontmatter) + a line in `docs/wiki/index.md` |
-| Durable decision | `docs/DECISIONS.md` (new ADR) |
+| Genuine fork (you can name the rejected alternative) or deviation from the baseline | `docs/DECISIONS.md` (new ADR; gate in its header) |
 | Structure/module change | `docs/ARCHITECTURE.md` |
 | Done items / new follow-ups / answered questions | `docs/BACKLOG.md` |
 | Deferred item whose `target:` is now current | `docs/BACKLOG.md` (active queue) |

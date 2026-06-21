@@ -5,6 +5,13 @@ The map. Read only the section for your module. Link to module `README.md`s; don
 ## What it is
 [Provide a brief 1-2 sentence description of the system and its primary value proposition / purpose.]
 
+## Baseline (the default this system implements)
+[Name the standard, spec, or convention this system implements by default: the domain standard, the
+framework defaults, the obvious approach for your stack. This is the reference point that makes
+"standard vs. fork" decidable. Implementing the baseline is description (write it in `docs/wiki/`),
+not a decision; only a deliberate deviation from it earns an ADR. Without a named baseline, every
+implementation choice looks like a fork and `DECISIONS.md` bloats.]
+
 ## Stack (why → DECISIONS.md)
 | Layer | Choice |
 |------|--------|
