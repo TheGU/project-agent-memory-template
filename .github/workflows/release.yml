@@ -1,0 +1,43 @@
+name: Release template
+
+# Builds only on tagged commits: push a v* tag to publish a release.
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Package template/ as a zip
+        run: |
+          cp -r template agent-template
+          mkdir -p dist
+          zip -r "dist/agent-template-${GITHUB_REF_NAME}.zip" agent-template -x '*/.DS_Store'
+
+      - name: Publish release with the zip asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Use this version's section from RELEASE.md as the notes; fall back to auto-generated.
+          awk -v tag="${GITHUB_REF_NAME}" '
+            $0 ~ "^## "tag {flag=1; next}
+            /^## / {flag=0}
+            flag {print}
+          ' RELEASE.md > notes.md
+          if [ -s notes.md ]; then
+            gh release create "${GITHUB_REF_NAME}" \
+              "dist/agent-template-${GITHUB_REF_NAME}.zip" \
+              --title "${GITHUB_REF_NAME}" --notes-file notes.md
+          else
+            gh release create "${GITHUB_REF_NAME}" \
+              "dist/agent-template-${GITHUB_REF_NAME}.zip" \
+              --title "${GITHUB_REF_NAME}" --generate-notes
+          fi
