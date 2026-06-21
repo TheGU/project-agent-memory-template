@@ -9,6 +9,8 @@ date; the release workflow uses that section as the GitHub release notes.
 
 ## Unreleased
 
+## v0.0.1 - 2026-06-21
+
 - Restructure: the shippable template moved under `template/`; the repo root now holds maintainer
   control (`AGENTS.md`, `CLAUDE.md`), the release CI, and maintenance `docs/sessions/`.
 - Wiki adopts OKF-style YAML frontmatter with an on-demand `docs/wiki/index.md` catalog.
