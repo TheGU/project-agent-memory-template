@@ -10,4 +10,5 @@ its depth (read-gate lives in `AGENTS.md`). Descriptions here mirror each page's
 * [Title](topic.md) - one-line description (from the page's frontmatter `description`).
 -->
 
-_No pages yet._
+# Process
+* [Going production (local mode to GitHub mode)](going-production.md) - the one-time checklist that flips the repo from local mode to GitHub mode, plus the standing CI cost-control patterns (path filters, concurrency, the run-ci label gate).

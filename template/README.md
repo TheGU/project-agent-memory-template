@@ -4,7 +4,7 @@ A structured, tiered memory and guidelines framework designed for AI coding agen
 
 ---
 
-## The Core Philosophy (ADR-001)
+## The Core Philosophy
 
 Traditionally, agents use a single large state file (e.g., `STATE.md` or `MEMORY.md`) to track progress and context. However, single-file approaches:
 
@@ -30,8 +30,7 @@ This template solves these problems by splitting memory by **lifecycle and scope
 └── docs/
     ├── ARCHITECTURE.md         # The system map, tech stack, and module layout
     ├── ROADMAP.md              # Milestone phases with concrete done-criteria
-    ├── BACKLOG.md              # Active task queue and unresolved questions
-    ├── DECISIONS.md            # ADRs (Architectural Decision Records) capturing "why" decisions
+    ├── QUEUE.md                # Local-mode work queue (issue-shaped notes; becomes GitHub Issues at the flip)
     ├── wiki/                   # Deep-dive scoped guides + index.md catalog (loaded only when needed)
     └── sessions/               # Episodic plans and progress tracking
         ├── TEMPLATE.md         # Session blueprint
@@ -47,12 +46,12 @@ This template solves these problems by splitting memory by **lifecycle and scope
 ### 2. High-Level Direction
 
 - **[docs/ROADMAP.md](./docs/ROADMAP.md)**: The long-term plan divided into production-ready phases. Helps the agent understand what phase the project is in and what the concrete completion criteria are.
-- **[docs/BACKLOG.md](./docs/BACKLOG.md)**: The short-term task queue and list of open questions. Agents claim items here but do not modify this file to do so (avoiding branch conflicts).
+- **The work queue**: In **GitHub mode** (the destination state) the queue is GitHub Issues (`gh issue list`); issues carry discussion, close automatically from PR merges, and never need migration. In **local mode** (day zero, no remote yet) the queue is [docs/QUEUE.md](./docs/QUEUE.md): issue-shaped notes that convert mechanically to real issues at the flip (see the `going-production` wiki page). Agents claim items by declaring scope in their session file, not by editing the queue.
 
 ### 3. System Design & Architectural Rationale
 
-- **[docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)**: Defines the tech stack, module responsibilities, folder structures, and key data flow models.
-- **[docs/DECISIONS.md](./docs/DECISIONS.md)**: An append-only log of Architectural Decision Records (ADRs). Helps agents understand the rationale behind past decisions and tech choices.
+- **[docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)**: Defines the tech stack, module responsibilities, folder structures, key data flow models, and the baseline (the standard the system implements by default).
+- **Decision records**: A genuine fork (a choice with a named rejected alternative, or a deviation from the baseline) is recorded as a dated "Decision record" entry in the relevant `docs/wiki/<topic>.md` page - where the read-gate surfaces it at task time - instead of a central append-only ADR log that nobody re-reads.
 
 ### 4. Deep-Dives
 
@@ -81,11 +80,11 @@ Follow this cycle for every task:
 
 ```mermaid
 graph TD
-    A[Start Session: Copy TEMPLATE.md to active/] --> B[Claim task from BACKLOG.md]
+    A[Pick a queue item: GitHub issue or QUEUE.md note] --> B[Cut branch from origin/main + copy TEMPLATE.md to active/]
     B --> C[Work on branch & update active/session file]
     C --> D[Verify changes with tests]
-    D --> E[Promote learnings to permanent docs]
-    E --> F[Move session file to archive/ & set status to done]
+    D --> E[Promote learnings to permanent docs + commit close-out]
+    E --> F[GitHub mode: push branch + open PR for owner review<br/>Local mode: merge to main locally]
 ```
 
 ### 1. Starting a Session
@@ -101,15 +100,16 @@ graph TD
 
 ### 3. Closing & Promoting Learnings (Required)
 
-Before merging your branch into `main`:
+Before opening the PR (GitHub mode) or merging your branch into `main` (local mode):
 
-1. Move your session file from `docs/sessions/active/` to `docs/sessions/archive/` and update `status: done` in the frontmatter.
-2. Promote permanent knowledge out of your session log to the relevant docs:
-   - **Always-true gotchas or rules** → [AGENTS.md](./AGENTS.md)
-   - **Scoped how-it-works / domain guides** → `docs/wiki/<topic>.md` (and add to the [AGENTS.md](./AGENTS.md) index)
-   - **Genuine forks / deviations from the baseline (not standard work)** → [docs/DECISIONS.md](./docs/DECISIONS.md)
-   - **Module structural / API updates** → [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)
-   - **New follow-ups / answered questions** → [docs/BACKLOG.md](./docs/BACKLOG.md)
+1. Promote permanent knowledge out of your session log to the relevant docs:
+   - **Always-true gotchas or rules** -> [AGENTS.md](./AGENTS.md)
+   - **Scoped how-it-works / domain guides** -> `docs/wiki/<topic>.md` (and add a line to `docs/wiki/index.md`)
+   - **Genuine forks / deviations from the baseline (not standard work)** -> a dated "Decision record" entry in the relevant `docs/wiki/<topic>.md` page
+   - **Module structural / API updates** -> [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)
+   - **New follow-ups / answered questions** -> a GitHub issue or issue comment (GitHub mode), or [docs/QUEUE.md](./docs/QUEUE.md) (local mode)
+   - **Release-worthy fixes/features** -> the PR title and description (they become the release notes at tag time)
+2. Move your session file from `docs/sessions/active/` to `docs/sessions/archive/`, update `status: done`, write the close-out, and commit - in GitHub mode this happens BEFORE `gh pr create`, so the close-out rides inside the PR.
 
 ## Continue Development with `/next`
 
@@ -117,7 +117,7 @@ If your Claude environment supports project commands from `.claude/commands/`, t
 
 ### What `/next` does
 
-- Reads [AGENTS.md](./AGENTS.md), [docs/BACKLOG.md](./docs/BACKLOG.md), [docs/ROADMAP.md](./docs/ROADMAP.md), and the active session list before choosing work.
+- Reads [AGENTS.md](./AGENTS.md), the work queue (GitHub Issues, or [docs/QUEUE.md](./docs/QUEUE.md) in local mode), [docs/ROADMAP.md](./docs/ROADMAP.md), and the active session list before choosing work.
 - Uses your explicit argument if you provide one; otherwise it picks the next task based on the current phase and deferred-item rules in `AGENTS.md`.
 - Tells you what it picked and why **before** coding.
 - Asks you to choose if there are multiple equally reasonable candidates.
@@ -149,7 +149,7 @@ To adopt this template in your repository:
 1. Copy the `CLAUDE.md`, `AGENTS.md`, `.claude/`, `.agents/`, and `docs/` directories to your project's root.
 2. Edit [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md) and customize the technology stack table, module layout, and core business entities.
 3. Edit [AGENTS.md](./AGENTS.md) and adapt the coding guidelines and guardrails to suit your codebase standards.
-4. Populate [docs/ROADMAP.md](./docs/ROADMAP.md) and [docs/BACKLOG.md](./docs/BACKLOG.md) with your project roadmap phases and task backlog.
+4. Populate [docs/ROADMAP.md](./docs/ROADMAP.md) with your project phases, and seed the work queue (GitHub Issues if the repo already has a remote; [docs/QUEUE.md](./docs/QUEUE.md) otherwise).
 5. Instruct your AI agent (in system prompts or via custom instructions) to read [CLAUDE.md](./CLAUDE.md) first.
 
 ---
@@ -170,8 +170,8 @@ Please bootstrap this project based on the template structure:
 2. Delete the root README.md file (which contains template setup instructions) so we can start clean.
 3. Review and initialize the core project files under the docs/ directory by replacing the placeholder templates with actual content tailored to the project description above:
    - Edit docs/ARCHITECTURE.md to reflect our proposed tech stack, directory layout, core business entities, and the baseline (the standard/default this system implements).
-   - Edit docs/ROADMAP.md and docs/BACKLOG.md to define our project phases, done-criteria, and immediate tasks.
-   - Edit docs/DECISIONS.md to record only genuine forks (a choice with a named rejected alternative). Standard or default behavior is described in the wiki, not recorded as an ADR.
+   - Edit docs/ROADMAP.md to define our project phases and done-criteria, and seed the work queue with the immediate tasks (GitHub Issues if a remote exists, docs/QUEUE.md otherwise).
+   - Record any genuine fork made during bootstrap (a choice with a named rejected alternative) as a dated "Decision record" entry in the relevant docs/wiki/ page. Standard or default behavior is described in the wiki body, not recorded as a decision.
    - Adapt AGENTS.md with specific coding guidelines, guardrails, and conventions for our selected tech stack.
 4. Create a new active session file under docs/sessions/active/ to track this bootstrapping work.
 5. Present the initialized architecture and roadmap plan to me for approval.
