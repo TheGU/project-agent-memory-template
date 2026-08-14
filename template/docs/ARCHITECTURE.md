@@ -9,10 +9,10 @@ The map. Read only the section for your module. Link to module `README.md`s; don
 [Name the standard, spec, or convention this system implements by default: the domain standard, the
 framework defaults, the obvious approach for your stack. This is the reference point that makes
 "standard vs. fork" decidable. Implementing the baseline is description (write it in `docs/wiki/`),
-not a decision; only a deliberate deviation from it earns an ADR. Without a named baseline, every
-implementation choice looks like a fork and `DECISIONS.md` bloats.]
+not a decision; only a deliberate deviation from it earns a decision record. Without a named
+baseline, every implementation choice looks like a fork and the decision records bloat.]
 
-## Stack (why → DECISIONS.md)
+## Stack (why: "Decision record" sections in `docs/wiki/`)
 | Layer | Choice |
 |------|--------|
 | Language | [e.g., TypeScript / Python / Go] |
@@ -46,4 +46,4 @@ Modules talk only through their port interface; each owns a `README.md`.
 ## Where to look
 - [Feature A / Utility A] → `[path/to/feature_or_utility]`
 - [Feature B / Utility B] → `[path/to/feature_or_utility]`
-- What's next / in flight → `BACKLOG.md` / `session/active/`
+- What's next / in flight -> the work queue (`gh issue list`, or `QUEUE.md` in local mode) / `sessions/active/`

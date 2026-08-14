@@ -2,8 +2,10 @@
 
 **Current phase: Phase 0.** (Update when a phase's done-criteria pass.)
 
-Stable phase scope + done-criteria. Granular tasks live in `BACKLOG.md`. Each phase is production-ready on its own; don't start the next before this one's done-criteria pass with tests,
-a user can complete the phase's primary task end-to-end in the DESIGN.md UI — not only via API/tests.
+Stable phase scope + done-criteria. Granular tasks live in the work queue (GitHub Issues, or
+`QUEUE.md` in local mode); in GitHub mode, optionally mirror phases as milestones. Each phase is
+production-ready on its own; don't start the next before this one's done-criteria pass with tests,
+a user can complete the phase's primary task end-to-end in the DESIGN.md UI - not only via API/tests.
 
 ## Phase 0 — [Phase 0 Title: E.g., The MVP / The Core Skeleton]
 Scope: [Description of the scope of Phase 0, e.g., tech stack setup, basic models, essential API endpoints]

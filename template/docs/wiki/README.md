@@ -60,5 +60,7 @@ surrounding prose. Broken links are allowed.
 ## Placement
 
 Global always-true -> `AGENTS.md` Gotchas. Scoped how-it-works -> here. A genuine fork (why) ->
-`DECISIONS.md` (only a real choice with a rejected alternative, or a deviation from the baseline).
-One-off task detail -> the session file.
+a "Decision record" entry in the topical page here (only a real choice with a rejected
+alternative, or a deviation from the baseline; dated heading, e.g.
+`### Decision: <slug> (YYYY-MM-DD)`, so references stay greppable). One-off task detail -> the
+session file.
