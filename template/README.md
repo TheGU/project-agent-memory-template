@@ -51,7 +51,7 @@ This template solves these problems by splitting memory by **lifecycle and scope
 ### 3. System Design & Architectural Rationale
 
 - **[docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)**: Defines the tech stack, module responsibilities, folder structures, key data flow models, and the baseline (the standard the system implements by default).
-- **Decision records**: A genuine fork (a choice with a named rejected alternative, or a deviation from the baseline) is recorded as a dated "Decision record" entry in the relevant `docs/wiki/<topic>.md` page - where the read-gate surfaces it at task time - instead of a central append-only ADR log that nobody re-reads.
+- **Decisions**: A genuine fork (a choice with a named rejected alternative, or a deviation from the baseline) is folded into the relevant `docs/wiki/<topic>.md` page - the page states the new truth where the read-gate surfaces it at task time, with the rejected alternative named inline where it matters - instead of a central append-only ADR log that nobody re-reads.
 
 ### 4. Deep-Dives
 
@@ -105,7 +105,7 @@ Before opening the PR (GitHub mode) or merging your branch into `main` (local mo
 1. Promote permanent knowledge out of your session log to the relevant docs:
    - **Always-true gotchas or rules** -> [AGENTS.md](./AGENTS.md)
    - **Scoped how-it-works / domain guides** -> `docs/wiki/<topic>.md` (and add a line to `docs/wiki/index.md`)
-   - **Genuine forks / deviations from the baseline (not standard work)** -> a dated "Decision record" entry in the relevant `docs/wiki/<topic>.md` page
+   - **Genuine forks / deviations from the baseline (not standard work)** -> fold into the relevant `docs/wiki/<topic>.md` page so it states the new truth (rejected alternative named inline where it matters)
    - **Module structural / API updates** -> [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)
    - **New follow-ups / answered questions** -> a GitHub issue or issue comment (GitHub mode), or [docs/QUEUE.md](./docs/QUEUE.md) (local mode)
    - **Release-worthy fixes/features** -> the PR title and description (they become the release notes at tag time)
@@ -171,7 +171,7 @@ Please bootstrap this project based on the template structure:
 3. Review and initialize the core project files under the docs/ directory by replacing the placeholder templates with actual content tailored to the project description above:
    - Edit docs/ARCHITECTURE.md to reflect our proposed tech stack, directory layout, core business entities, and the baseline (the standard/default this system implements).
    - Edit docs/ROADMAP.md to define our project phases and done-criteria, and seed the work queue with the immediate tasks (GitHub Issues if a remote exists, docs/QUEUE.md otherwise).
-   - Record any genuine fork made during bootstrap (a choice with a named rejected alternative) as a dated "Decision record" entry in the relevant docs/wiki/ page. Standard or default behavior is described in the wiki body, not recorded as a decision.
+   - Fold any genuine fork made during bootstrap (a choice with a named rejected alternative) into the relevant docs/wiki/ page or docs/ARCHITECTURE.md so the docs state the chosen approach, naming the rejected alternative inline only where it helps. Standard or default behavior is simply described in the wiki body.
    - Adapt AGENTS.md with specific coding guidelines, guardrails, and conventions for our selected tech stack.
 4. Create a new active session file under docs/sessions/active/ to track this bootstrapping work.
 5. Present the initialized architecture and roadmap plan to me for approval.

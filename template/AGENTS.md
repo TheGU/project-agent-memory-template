@@ -1,7 +1,7 @@
 # AGENTS.md
 
 Read first, every session. Rules, not explanation - the *why* behind a rule lives in the
-"Decision record" section of the relevant `docs/wiki/` page.
+relevant `docs/wiki/` page.
 
 ## Modes: local now, GitHub as soon as possible
 
@@ -96,16 +96,21 @@ is the only exception to cutting every branch from `origin/main`):
 |---|---|
 | Global, always-true gotcha/rule | `AGENTS.md` -> Gotchas |
 | Scoped how-it-works | `docs/wiki/<topic>.md` (full frontmatter) + a line in `docs/wiki/index.md` |
-| Genuine fork (you can name the rejected alternative) or deviation from the baseline | a "Decision record" entry in the relevant `docs/wiki/<topic>.md` page (gate below) |
+| Genuine fork (you can name the rejected alternative) or deviation from the baseline | folded into the relevant `docs/wiki/<topic>.md` page (and any config/scaffold it touches) so the docs state the new truth (gate below) |
 | Structure/module change | `docs/ARCHITECTURE.md` |
 | New follow-ups / answered questions | a GitHub issue or issue comment (GitHub mode); `docs/QUEUE.md` (local mode) |
 | Release-worthy fix or feature | the PR title and description - they become the release notes at tag time, so write them for a reader outside the branch |
 
-**Decision-record gate:** record only a genuine fork - a choice where you can name the
-alternative you rejected and the durable reason - or a deliberate deviation from the baseline
-named in `ARCHITECTURE.md`. Implementing the baseline or a framework default is description
-(wiki body), not a decision; "defer X" is scheduling (queue item), not a decision. Give each
-entry a dated heading (`### Decision: <slug> (YYYY-MM-DD)`) so references stay greppable.
+**Decision gate:** written rationale is earned only by a genuine fork - a choice where you can
+name the alternative you rejected and the durable reason - or a deliberate deviation from the
+baseline named in `ARCHITECTURE.md`. There is no record format: fold the outcome into the
+affected wiki/`ARCHITECTURE.md` section so it states what the system now does, and update any
+config or scaffold the choice touches. Name the rejected alternative and trade-off in one prose
+sentence only where it saves a future reader from re-litigating the choice - no decision labels,
+headings, or central log; nobody should need a decision code to know the database is Postgres
+when the compose file and the architecture page already say so. Implementing the baseline or a
+framework default is description (wiki body), not a decision; "defer X" is scheduling (queue
+item), not a decision.
 
 ## Coding Guidelines
 - **Think Before Coding**: Don't assume or hide confusion. State assumptions explicitly, present tradeoffs, push back on overcomplication, and ask if unclear.
