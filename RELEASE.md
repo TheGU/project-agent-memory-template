@@ -23,6 +23,16 @@ date; the release workflow uses that section as the GitHub release notes.
 - New comment-hygiene rule in `AGENTS.md` (no issue/PR numbers, session context, or tool versions
   in code comments), stacked-PR guidance with the up-front-retarget caution, close-out-before-PR
   session rules, and the docs-stay-current review-blocker rule.
+- Recurring maintenance skills: `/tech-refresh` (dependency + CVE refresh - monthly or on a
+  security alert; patch/minor updates applied in one session, major bumps and EOL items filed as
+  migration queue items) and `/housekeeping` (quarterly clutter sweep, docs-drift fixes, and
+  reflection over recently merged work), listed in a new `AGENTS.md` "Recurring maintenance"
+  section.
+- Session-archive retention: the archive is a hand-off buffer. Close still moves the session file
+  to `docs/sessions/archive/` so the record rides in the PR (or the local merge commit); every
+  new session deletes archive leftovers as part of its first commit - git history retains the
+  files (`git log --diff-filter=D`), and a closed session is resumed by restoring its file into
+  `active/`.
 - Rationale: `docs/way-of-works-report.md` (maintainer side).
 
 ## v0.0.2 - 2026-06-21

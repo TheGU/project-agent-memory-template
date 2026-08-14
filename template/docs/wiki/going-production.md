@@ -24,6 +24,9 @@ this checklist once; every step is cheap now and expensive later. After the flip
    (`git fetch --prune origin && git switch -c <n>-<slug> origin/main`), named
    `<issue-number>-<slug>`, and end in push + `gh pr create` with `Closes #<n>` (see AGENTS.md
    "Definition of done - GitHub mode"). The owner merges and presses "Delete branch" immediately.
+   The session-archive sweep is unchanged by the flip: every new session still deletes
+   `docs/sessions/archive/` leftovers at start - the archived file's record now rides in its PR
+   instead of a local merge commit.
 4. **Releases: no release-notes file, ever.** Release notes are generated at tag time from merged
    PR titles and descriptions - so PR titles are written for a reader outside the branch. Add a
    tag-triggered workflow job (needs `permissions: contents: write`):

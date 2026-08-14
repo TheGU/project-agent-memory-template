@@ -113,6 +113,25 @@ blocker); and when migrating or importing a doc, verify every claim against code
 ship carried-over prose unaudited (the studied project's 826-line guide documented directories
 and class names that did not exist; the honest rewrite was 89 lines).
 
+## Lesson 11: Maintenance is a session type, and the session archive is a hand-off buffer
+
+Two recurring needs get first-class skills instead of ad-hoc effort. `/tech-refresh` (monthly, or
+immediately on a security alert): collect every signal (Dependabot alerts, the stack's audit
+tools, outdated-package listings, a container scan, the EOL horizon), apply patch/minor updates
+in one session, and turn major bumps and EOL items into migration queue items - never silent
+upgrades. `/housekeeping` (quarterly, or on noticeable drift): sweep clutter, fix docs drift
+against code, and reflect over recently merged work for recurring mistakes worth promoting.
+
+Retention insight behind the archive sweep: a session file is irreplaceable mid-flight
+(interrupt-proof plan, progress, and hand-off state, which issue comments carry badly) and
+redundant the moment the session closes - promote-on-close moved the learnings, the PR diff is
+the change record, and git history retains the file itself. So the archive is a hand-off buffer,
+not a library: the close still moves the file to `docs/sessions/archive/` so the record rides in
+the PR's Files changed tab, and every new session deletes whatever sits there as part of its
+first commit (`git log --diff-filter=D -- docs/sessions/archive` recovers any file; restore one
+into `active/` to resume or fix a closed session). The archive stays near-empty automatically,
+with no retention policy to remember and no wisdom lost.
+
 ## Non-goals
 
 - The session file system (`docs/sessions/` + TEMPLATE.md) stays: it complements issues

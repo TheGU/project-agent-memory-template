@@ -13,7 +13,7 @@ scope:
 Copy to `active/YYYY-MM-DD-<slug>.md`, fill `scope`, read other `active/` files first. On close:
 promote learnings (AGENTS.md table), write the close-out below, set `status: done`, move to
 `../archive/`, and commit - BEFORE `gh pr create` (GitHub mode) so the close-out rides inside the
-PR. Do not record the PR URL here (the issue links it) and do not commit after the PR exists.
+PR (the archive is a hand-off buffer; the next session deletes it at start). Do not record the PR URL here (the issue links it) and do not commit after the PR exists.
 Local mode: merge back to `main` locally instead of opening a PR.
 
 ## Goal / Problem Statement

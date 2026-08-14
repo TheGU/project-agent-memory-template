@@ -44,7 +44,11 @@ affected `docs/wiki/` page in the same PR - a stale doc is a review blocker.
   done. Never reuse a leftover worktree - its HEAD is stale by definition.
 - Start: copy `docs/sessions/TEMPLATE.md` to `docs/sessions/active/YYYY-MM-DD-<slug>.md`, fill
   `scope`. Declaring scope claims the item - don't edit the queue to claim. Read `active/` first
-  to avoid overlap.
+  to avoid overlap. Then sweep the hand-off buffer: delete any files sitting in
+  `docs/sessions/archive/` and include the deletion in your first commit - an archived file
+  already rode to review inside its own PR (or its local merge commit) and lives in git history
+  (`git log --diff-filter=D -- docs/sessions/archive` recovers any of them). To resume or fix a
+  closed session, restore its file from history into `active/`; never leave it in `archive/`.
 - **Commit freely** - small green checkpoints as you go; keep the handoff current so a stop at any
   point resumes from the file alone.
 - **Never push `main`. Never force-push. Never add self-attribution trailers** (`Co-Authored-By:
@@ -61,7 +65,9 @@ affected `docs/wiki/` page in the same PR - a stale doc is a review blocker.
 3. Promote learnings (table below).
 4. Write the session close-out (final summary, validation results, next step: owner review), set
    `status: done`, move the session file to `docs/sessions/archive/`, and commit - BEFORE opening
-   the PR, so the close-out rides inside it.
+   the PR, so the close-out rides inside it. The archive is only a hand-off buffer: the move puts
+   the finished session file in the PR's Files changed tab for review, and the next session
+   deletes it at start.
 5. Push the branch. `gh pr create` referencing the issue (`Closes #<n>`).
 6. Do not record the PR URL in the session log (the issue links the PR), and do not commit to the
    branch after the PR exists (review follow-ups excepted).
@@ -78,6 +84,7 @@ start - then stop and ask. Settle decisions in plan mode at session start, not b
 ### Definition of done - local mode
 Commit your work, merge `main` into your branch, resolve conflicts, verify green, merge the
 branch back into `main` locally, promote learnings, archive the session, report what landed.
+The archived file rides in its merge commit; the next session deletes it at start.
 Never wait for review in local mode; if the owner wants changes, they open a new session.
 
 ### Stacked runs (GitHub mode): chained PRs for a long multi-issue effort
@@ -139,6 +146,15 @@ code cannot show, or by saving the reader a trip to another file.
 - Tests are the correctness contract; verify by running them; add a failing test before a fix.
 - Merge `main` into your branch before opening the PR (or before merging back, local mode).
 - Link, don't duplicate.
+
+## Recurring maintenance
+Each is a full session (queue item, branch, session file, closed per the current mode's
+definition of done); the command file carries the checklist.
+- `/tech-refresh` (`.claude/commands/tech-refresh.md`): dependency + CVE refresh. Run monthly, or
+  immediately on a Dependabot/security alert. Patch/minor updates land in the session's PR; major
+  bumps and EOL items become migration queue items, never silent upgrades.
+- `/housekeeping` (`.claude/commands/housekeeping.md`): clutter sweep, docs-drift fixes,
+  reflection over recently merged work. Run quarterly, or when drift is noticeable.
 
 ## Gotchas (global, always-true only)
 _None yet._
