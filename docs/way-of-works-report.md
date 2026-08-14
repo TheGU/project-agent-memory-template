@@ -39,10 +39,13 @@ An append-only ADR log grows into a monolith nobody re-reads (one adopting proje
 entries; another 37 KB). The knowledge is only useful when it surfaces at task time, which is
 what the wiki read-gate already does.
 
-Template change: `DECISIONS.md` is removed. The ADR gate survives unchanged (record only a
-genuine fork with a named rejected alternative, or a deliberate deviation from the baseline), but
-the destination is a dated "Decision record" entry in the relevant `docs/wiki/<topic>.md` page,
-indexed by the same trigger lines. Dated stable headings keep references greppable.
+Template change: `DECISIONS.md` is removed. The gate survives unchanged (write rationale only
+for a genuine fork with a named rejected alternative, or a deliberate deviation from the
+baseline), but there is no record format: the decision is folded into the relevant
+`docs/wiki/<topic>.md` page - and into any config or scaffold it touches - so the docs simply
+state the new truth, with the rejected alternative named inline where it saves re-litigating.
+Nobody should need a decision label to know the database is Postgres; the compose file and the
+architecture page already say so.
 
 ## Lesson 4: Comment hygiene from day one
 

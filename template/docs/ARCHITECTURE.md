@@ -12,7 +12,7 @@ framework defaults, the obvious approach for your stack. This is the reference p
 not a decision; only a deliberate deviation from it earns a decision record. Without a named
 baseline, every implementation choice looks like a fork and the decision records bloat.]
 
-## Stack (why: "Decision record" sections in `docs/wiki/`)
+## Stack (why: the relevant `docs/wiki/` page)
 | Layer | Choice |
 |------|--------|
 | Language | [e.g., TypeScript / Python / Go] |

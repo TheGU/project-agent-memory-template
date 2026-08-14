@@ -16,9 +16,10 @@ date; the release workflow uses that section as the GitHub release notes.
   filters, concurrency, the `run-ci` label gate, tag-time `gh release create --generate-notes`).
 - `docs/BACKLOG.md` replaced by `docs/QUEUE.md`: issue-shaped local-mode notes that convert
   mechanically to GitHub Issues at the flip; in GitHub mode the queue is the issue tracker.
-- `docs/DECISIONS.md` removed: decisions (same gate - a genuine fork with a named rejected
-  alternative, or a baseline deviation) are recorded as dated "Decision record" entries in the
-  relevant `docs/wiki/` page, where the read-gate surfaces them at task time.
+- `docs/DECISIONS.md` removed: a decision (same gate - a genuine fork with a named rejected
+  alternative, or a baseline deviation) is folded into the relevant `docs/wiki/` page and any
+  config it touches, so the docs state the current truth where the read-gate surfaces it;
+  rejected alternatives are named inline only where they matter.
 - New comment-hygiene rule in `AGENTS.md` (no issue/PR numbers, session context, or tool versions
   in code comments), stacked-PR guidance with the up-front-retarget caution, close-out-before-PR
   session rules, and the docs-stay-current review-blocker rule.
