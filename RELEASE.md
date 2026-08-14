@@ -9,6 +9,21 @@ date; the release workflow uses that section as the GitHub release notes.
 
 ## Unreleased
 
+- Production way-of-works: the template now defines two modes - local mode (day zero, no remote)
+  and GitHub mode (the destination state: issue-first, branch per issue cut from `origin/main`,
+  push + PR with `Closes #<n>`, owner merges and deletes the branch). A new wiki page
+  `going-production.md` is the one-time flip checklist plus CI cost-control patterns (path
+  filters, concurrency, the `run-ci` label gate, tag-time `gh release create --generate-notes`).
+- `docs/BACKLOG.md` replaced by `docs/QUEUE.md`: issue-shaped local-mode notes that convert
+  mechanically to GitHub Issues at the flip; in GitHub mode the queue is the issue tracker.
+- `docs/DECISIONS.md` removed: decisions (same gate - a genuine fork with a named rejected
+  alternative, or a baseline deviation) are recorded as dated "Decision record" entries in the
+  relevant `docs/wiki/` page, where the read-gate surfaces them at task time.
+- New comment-hygiene rule in `AGENTS.md` (no issue/PR numbers, session context, or tool versions
+  in code comments), stacked-PR guidance with the up-front-retarget caution, close-out-before-PR
+  session rules, and the docs-stay-current review-blocker rule.
+- Rationale: `docs/way-of-works-report.md` (maintainer side).
+
 ## v0.0.2 - 2026-06-21
 
 - ADR gate: `DECISIONS.md` now records only a genuine fork (a choice with a named rejected
