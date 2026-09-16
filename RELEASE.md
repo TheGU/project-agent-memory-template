@@ -31,8 +31,15 @@ date; the release workflow uses that section as the GitHub release notes.
 - Session-archive retention: the archive is a hand-off buffer. Close still moves the session file
   to `docs/sessions/archive/` so the record rides in the PR (or the local merge commit); every
   new session deletes archive leftovers as part of its first commit - git history retains the
-  files (`git log --diff-filter=D`), and a closed session is resumed by restoring its file into
-  `active/`.
+  files (`git log --diff-filter=D`), and a closed session is resumed by copying its content into
+  a new `active/` file.
+- Concurrency hardening: the shared list files (`docs/wiki/index.md`, Gotchas, `QUEUE.md`,
+  `ARCHITECTURE.md` lists) get an explicit merge rule at the definition of done (union of both
+  sides, one line where both touched the same item, never for structured files); `archive/` is
+  write-once (resume by copying into a new `active/` file, never `git mv`); the sweep leaves
+  `.keep`; `/next` and the README now carry the sweep step; the last "decision record" wording is
+  gone from `AGENTS.md` Guardrails and `ARCHITECTURE.md`; comment pointers cite a rule by name and
+  page, never by code.
 - Rationale: `docs/way-of-works-report.md` (maintainer side).
 
 ## v0.0.2 - 2026-06-21

@@ -44,11 +44,14 @@ affected `docs/wiki/` page in the same PR - a stale doc is a review blocker.
   done. Never reuse a leftover worktree - its HEAD is stale by definition.
 - Start: copy `docs/sessions/TEMPLATE.md` to `docs/sessions/active/YYYY-MM-DD-<slug>.md`, fill
   `scope`. Declaring scope claims the item - don't edit the queue to claim. Read `active/` first
-  to avoid overlap. Then sweep the hand-off buffer: delete any files sitting in
-  `docs/sessions/archive/` and include the deletion in your first commit - an archived file
-  already rode to review inside its own PR (or its local merge commit) and lives in git history
-  (`git log --diff-filter=D -- docs/sessions/archive` recovers any of them). To resume or fix a
-  closed session, restore its file from history into `active/`; never leave it in `archive/`.
+  to avoid overlap. Then sweep the hand-off buffer: delete every session file sitting in
+  `docs/sessions/archive/` (leave `.keep`) and include the deletion in your first commit - an
+  archived file already rode to review inside its own PR (or its local merge commit) and lives in
+  git history (`git log --diff-filter=D -- docs/sessions/archive` recovers any of them).
+  `archive/` is write-once: only a closing session adds a file, only a starting session deletes
+  one. Never edit a file in `archive/`, and never move one out of it - to resume or fix a closed
+  session, copy its content into a new `active/<today>-<slug>.md` and let the sweep delete the
+  original (a `git mv` out of `archive/` conflicts with every in-flight branch that swept it).
 - **Commit freely** - small green checkpoints as you go; keep the handoff current so a stop at any
   point resumes from the file alone.
 - **Never push `main`. Never force-push. Never add self-attribution trailers** (`Co-Authored-By:
@@ -62,6 +65,13 @@ affected `docs/wiki/` page in the same PR - a stale doc is a review blocker.
 ### Definition of done - GitHub mode
 1. Commit your work; tests + lint/typecheck green.
 2. `git fetch origin`, merge `origin/main` into your branch, resolve conflicts, re-verify green.
+   Shared list files (`docs/wiki/index.md`, the `AGENTS.md` Gotchas list, `docs/QUEUE.md` in
+   local mode, `docs/ARCHITECTURE.md` lists) conflict by adjacent additions or removals: keep
+   every line either side added, and leave deleted every line either side removed. That union
+   applies only where the two sides touched *different* items; where both touched the same item
+   (the same wiki page, the same queue note, a placeholder such as `_None yet._`, or a
+   single-value line such as ROADMAP's current phase) keep one line that states the merged truth. Never union-merge structured files (`skills-lock.json`,
+   `DESIGN.md`, lockfiles): re-generate or pick one side and re-apply the other's change.
 3. Promote learnings (table below).
 4. Write the session close-out (final summary, validation results, next step: owner review), set
    `status: done`, move the session file to `docs/sessions/archive/`, and commit - BEFORE opening
@@ -82,8 +92,9 @@ done-criteria are unmet, tests are red, or a new decision surfaced that wasn't s
 start - then stop and ask. Settle decisions in plan mode at session start, not before the close.
 
 ### Definition of done - local mode
-Commit your work, merge `main` into your branch, resolve conflicts, verify green, merge the
-branch back into `main` locally, promote learnings, archive the session, report what landed.
+Commit your work, merge `main` into your branch, resolve conflicts (same list-file rule as
+GitHub mode step 2), verify green, merge the branch back into `main` locally, promote
+learnings, archive the session, report what landed.
 The archived file rides in its merge commit; the next session deletes it at start.
 Never wait for review in local mode; if the owner wants changes, they open a new session.
 
@@ -132,10 +143,12 @@ code cannot show, or by saving the reader a trip to another file.
   numbers. All of those rot, and `git blame` plus the issue tracker already carry them.
 - Durable design rationale goes in `docs/wiki/`, not in a comment block.
 - When a comment starts growing into an essay, write the wiki paragraph instead and leave at most
-  one pointer line behind.
+  one pointer line behind, citing the rule by name and page (`see "timeouts are mandatory" in
+  docs/wiki/driver-contract.md`), never by a code or number: the reader gets the rule without
+  the trip, and the page can change under it without the comment going stale.
 
-## Guardrails (never break without a decision record; to dispute, raise a queue item and stop)
-- [Example: One stack: TS monorepo, modular monolith, one Postgres. No microservices, broker, or second language without a decision record.]
+## Guardrails (never break one; to change one, raise a queue item and stop)
+- [Example: One stack: TS monorepo, modular monolith, one Postgres. No microservices, broker, or second language unless the owner changes this line.]
 - [Example: Every domain row has `tenant_id` if multi-tenant; RLS enforced; no cross-tenant query outside marked operator paths.]
 - [Example: Per-tenant behaviour is config with defaults, never hardcoded (primitive vs policy).]
 - Finish a phase (done-criteria + tests) before starting the next.

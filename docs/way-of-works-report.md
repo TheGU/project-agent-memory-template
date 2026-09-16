@@ -128,9 +128,32 @@ redundant the moment the session closes - promote-on-close moved the learnings, 
 the change record, and git history retains the file itself. So the archive is a hand-off buffer,
 not a library: the close still moves the file to `docs/sessions/archive/` so the record rides in
 the PR's Files changed tab, and every new session deletes whatever sits there as part of its
-first commit (`git log --diff-filter=D -- docs/sessions/archive` recovers any file; restore one
-into `active/` to resume or fix a closed session). The archive stays near-empty automatically,
-with no retention policy to remember and no wisdom lost.
+first commit (`git log --diff-filter=D -- docs/sessions/archive` recovers any file; to resume or
+fix a closed session, copy its content into a new `active/` file rather than moving it, since a
+move conflicts with every in-flight branch that swept it). The archive stays near-empty
+automatically, with no retention policy to remember and no wisdom lost.
+
+## Lesson 12: Shared files are the conflict surface; keep them few, list-shaped, and merge-by-union
+
+Concurrent sessions never conflict on their own session file (one file per branch) or on the
+archive sweep (git merges two deletions of the same file cleanly). What still conflicts is every
+file that many branches append to: the wiki index, the Gotchas list, the local-mode queue, and the
+architecture page's lists. Those cannot be removed without losing progressive disclosure, so the
+template names them and gives the merge rule: they are list files, their conflicts are adjacent
+additions or removals, and the resolution is the union of both sides - except where both sides
+touched the same item (the same wiki page, the same queue note, a placeholder line, or a
+single-value line such as the current phase), which takes one merged line. Structured files
+(`skills-lock.json`, `DESIGN.md`, lockfiles) are never union-merged.
+
+Two smaller rules close the remaining holes: the sweep leaves `.keep` (an empty directory
+vanishes from git and the next close cannot move a file into it), and `archive/` is write-once -
+only a closing session adds, only a starting session deletes, and a closed session is resumed by
+copying its content into a new `active/` file, because a `git mv` out of the archive is a
+rename/delete conflict against every in-flight branch that already swept it.
+
+Also from the owner's ADR post-mortem: a pointer comment cites a rule by name and page, never by
+a code or number, so the reader has the rule without the trip and the page can change under it
+without the comment rotting.
 
 ## Non-goals
 

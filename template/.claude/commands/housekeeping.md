@@ -14,8 +14,8 @@ Steps:
 1. Open the session: queue item titled "Housekeeping YYYY-MM", branch cut from the mainline,
    session file from TEMPLATE.
 2. Sweep clutter:
-   - `docs/sessions/archive/`: delete anything present (normally already empty - every new
-     session sweeps it at start; the files are merged history, recoverable from git).
+   - `docs/sessions/archive/`: delete anything present except `.keep` (normally already empty -
+     every new session sweeps it at start; the files are merged history, recoverable from git).
    - Scratch/temp directories: list candidates in the session file and confirm with the owner
      before deleting - they may hold captures still referenced elsewhere. Never auto-delete.
    - Branches and worktrees: `git fetch --prune`, delete local branches whose PRs are merged,

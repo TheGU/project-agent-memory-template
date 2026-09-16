@@ -16,7 +16,8 @@ Continue development. Follow AGENTS.md strictly.
 3. Open a session: cut the branch from the mainline (GitHub mode: `git fetch --prune origin &&
    git switch -c <n>-<slug> origin/main`) + copy `docs/sessions/TEMPLATE.md` to
    `docs/sessions/active/<date>-<slug>.md` and fill `scope` (declaring scope CLAIMS the item -
-   don't edit the queue to claim).
+   don't edit the queue to claim). Delete any leftover files in `docs/sessions/archive/` (leave
+   `.keep`) in the same first commit.
 4. If a decision that wasn't settled at session start surfaces, STOP and ask me in plan mode -
    don't guess.
 5. Test-first incl. bad paths. Run tests/typecheck per AGENTS.md instruction.
