@@ -9,8 +9,9 @@ The map. Read only the section for your module. Link to module `README.md`s; don
 [Name the standard, spec, or convention this system implements by default: the domain standard, the
 framework defaults, the obvious approach for your stack. This is the reference point that makes
 "standard vs. fork" decidable. Implementing the baseline is description (write it in `docs/wiki/`),
-not a decision; only a deliberate deviation from it earns a decision record. Without a named
-baseline, every implementation choice looks like a fork and the decision records bloat.]
+not a decision; only a deliberate deviation from it earns written rationale, folded into the
+relevant `docs/wiki/` page (gate in `AGENTS.md`). Without a named baseline, every implementation
+choice looks like a fork and the wiki fills with rationale nobody needs.]
 
 ## Stack (why: the relevant `docs/wiki/` page)
 | Layer | Choice |

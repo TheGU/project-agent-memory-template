@@ -35,7 +35,7 @@ This template solves these problems by splitting memory by **lifecycle and scope
     └── sessions/               # Episodic plans and progress tracking
         ├── TEMPLATE.md         # Session blueprint
         ├── active/             # In-flight sessions (one file/branch per task)
-        └── archive/            # Log of completed sessions
+        └── archive/            # Hand-off buffer; next session deletes it
 ```
 
 ### 1. The Entry Points
@@ -61,7 +61,7 @@ This template solves these problems by splitting memory by **lifecycle and scope
 
 - **[docs/sessions/](./docs/sessions/)**: A folder containing episodic session files.
   - **active/**: Contains active session files (e.g., `active/2026-06-04-implement-auth.md`). Each session corresponds to exactly one git branch/task. Agents write logs and keep their handoff notes here, which prevents parallel work on different branches from causing merge conflicts in memory files.
-  - **archive/**: Contains completed sessions, serving as a history of agent activities.
+  - **archive/**: A hand-off buffer, not a history. Closing moves the session file here so the record rides in the PR (or the local merge commit) for review; the next session deletes whatever it finds here in its first commit. Git history keeps every file.
 
 ### 6. Claude Commands
 
@@ -89,7 +89,7 @@ graph TD
 
 ### 1. Starting a Session
 
-1. In your working git branch, copy [docs/sessions/TEMPLATE.md](./docs/sessions/TEMPLATE.md) to `docs/sessions/active/YYYY-MM-DD-<slug>.md`.
+1. In your working git branch, delete any session files left in `docs/sessions/archive/` (they already shipped inside their own PR; git history keeps them), then copy [docs/sessions/TEMPLATE.md](./docs/sessions/TEMPLATE.md) to `docs/sessions/active/YYYY-MM-DD-<slug>.md`.
 2. Fill out the `scope` metadata block (claimed backlog items, target files, etc.).
 3. Summarize the goal and task breakdown.
 
@@ -109,7 +109,7 @@ Before opening the PR (GitHub mode) or merging your branch into `main` (local mo
    - **Module structural / API updates** -> [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md)
    - **New follow-ups / answered questions** -> a GitHub issue or issue comment (GitHub mode), or [docs/QUEUE.md](./docs/QUEUE.md) (local mode)
    - **Release-worthy fixes/features** -> the PR title and description (they become the release notes at tag time)
-2. Move your session file from `docs/sessions/active/` to `docs/sessions/archive/`, update `status: done`, write the close-out, and commit - in GitHub mode this happens BEFORE `gh pr create`, so the close-out rides inside the PR.
+2. Move your session file from `docs/sessions/active/` to `docs/sessions/archive/`, update `status: done`, write the close-out, and commit - in GitHub mode this happens BEFORE `gh pr create`, so the close-out rides inside the PR. The next session deletes it from `archive/` at start.
 
 ## Continue Development with `/next`
 
